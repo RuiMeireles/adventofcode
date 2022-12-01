@@ -1,20 +1,11 @@
-from typing import List
+from commonlib import read_file_with_blocks_of_int
 
 FILE_INPUT = "puzzles/day01_input.txt"
 
 
-def read_file_with_blocks(filename: str) -> List[List[int]]:
-    out_list: List[List[int]] = []
-    with open(filename) as f:
-        text = f.read()
-        text_blocks = text.split("\n\n")
-        for text_block in text_blocks:
-            out_list.append([int(line) for line in text_block.split("\n")])
-    return out_list
-
-
 if __name__ == "__main__":
-    inventories = read_file_with_blocks(FILE_INPUT)
+    inventories = read_file_with_blocks_of_int(FILE_INPUT)
+
     sum_inventories = [sum(inventory) for inventory in inventories]
     print(f"The elf carrying more calories carrys {max(sum_inventories)} calories.")
 
