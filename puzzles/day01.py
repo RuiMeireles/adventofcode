@@ -1,6 +1,6 @@
 from typing import List
 
-FILE_INPUT = "puzzles/day1_input.txt"
+FILE_INPUT = "puzzles/day01_input.txt"
 
 
 def read_file_with_blocks(filename: str) -> List[List[int]]:
