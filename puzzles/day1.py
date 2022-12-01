@@ -8,8 +8,8 @@ def read_file_with_blocks(filename: str) -> List[List[int]]:
     with open(filename) as f:
         text = f.read()
         text_blocks = text.split("\n\n")
-        for block in text_blocks:
-            out_list.append([int(block) for block in block.split("\n")])
+        for text_block in text_blocks:
+            out_list.append([int(line) for line in text_block.split("\n")])
     return out_list
 
 
