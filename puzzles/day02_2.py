@@ -1,6 +1,19 @@
 FILE_INPUT = "puzzles/day02_input.txt"
 
-result_matrix = {
+POINTS_FOR_OUTCOME = {
+    "Z": 6,  # Win
+    "Y": 3,  # Draw
+    "X": 0,  # Loss
+}
+
+POINTS_FOR_SELECTION = {
+    "A": 1,  # Rock
+    "B": 2,  # Paper
+    "C": 3,  # Scissor
+}
+
+SELECTIONS_OUTCOME = {
+    # Player1_selection, Player2_selection: Outcome_for_Player2
     "AA": "Y",
     "AB": "Z",
     "AC": "X",
@@ -12,28 +25,21 @@ result_matrix = {
     "CC": "Y",
 }
 
-points_for_outcome = {
-    "Z": 6,
-    "Y": 3,
-    "X": 0,
-}
-
-points_for_selection = {
-    "A": 1,
-    "B": 2,
-    "C": 3,
+SELECTIONS_FOR_PLAYER = {
+    # (Player1_selection, Outcome_for_Player2): Player2_selection
+    (s[0], o): s[1]
+    for s, o in SELECTIONS_OUTCOME.items()
 }
 
 if __name__ == "__main__":
     with open(FILE_INPUT) as f:
         text = f.readlines()
-        rounds = ["".join(line.rstrip().split(" ")) for line in text]
+        rounds = [line.rstrip().split(" ") for line in text]
 
     total_points = 0
     for round in rounds:
-        opponent_move, outcome = round[0], round[1]
-        result = [r for r, o in result_matrix.items() if o == outcome and r[0] == opponent_move][0]
-        my_move = result[1]
-        total_points += points_for_outcome[outcome] + points_for_selection[my_move]
+        opponent_move, outcome = round
+        my_move = SELECTIONS_FOR_PLAYER[(opponent_move, outcome)]
+        total_points += POINTS_FOR_OUTCOME[outcome] + POINTS_FOR_SELECTION[my_move]
 
     print(f"Total points = {total_points}")
