@@ -1,3 +1,6 @@
+import doctest
+from typing import List
+
 FILE_INPUT = "puzzles/day02_input.txt"
 
 POINTS_FOR_OUTCOME = {
@@ -31,15 +34,26 @@ SELECTIONS_FOR_PLAYER = {
     for s, o in SELECTIONS_OUTCOME.items()
 }
 
-if __name__ == "__main__":
-    with open(FILE_INPUT) as f:
-        text = f.readlines()
-        rounds = [line.rstrip().split(" ") for line in text]
 
+def calculate_points_from_rounds(rounds: List[List[str]]) -> int:
+    """
+    >>> calculate_points_from_rounds([["A", "Y"], ["B", "X"], ["C", "Z"]])
+    12
+    """
     total_points = 0
     for round in rounds:
         opponent_move, outcome = round
         my_move = SELECTIONS_FOR_PLAYER[(opponent_move, outcome)]
         total_points += POINTS_FOR_OUTCOME[outcome] + POINTS_FOR_SELECTION[my_move]
+    return total_points
 
+
+if __name__ == "__main__":
+    assert not doctest.testmod().failed
+
+    with open(FILE_INPUT) as f:
+        lines = f.readlines()
+
+    rounds = [line.rstrip().split(" ") for line in lines]
+    total_points = calculate_points_from_rounds(rounds)
     print(f"Total points = {total_points}")
