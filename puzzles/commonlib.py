@@ -1,4 +1,4 @@
-from typing import List
+from typing import Iterable, List
 
 
 def read_file_with_blocks_of_int(filename: str) -> List[List[int]]:
@@ -13,3 +13,9 @@ def read_file_with_blocks_of_int(filename: str) -> List[List[int]]:
         for text_block in text_blocks:
             out_list.append([int(line) for line in text_block.split("\n")])
     return out_list
+
+
+def chunks(lst: List[str], n: int) -> Iterable[List[str]]:
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i : i + n]
