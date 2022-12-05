@@ -15,7 +15,7 @@ def get_range(range_txt: str) -> List[int]:
 
 def count_completely_overlapped_pairs_in_range(ranges: List[str]) -> int:
     """
-    >>> items_list = [
+    >>> ranges = [
     ...     '2-4,6-8',
     ...     '2-3,4-5',
     ...     '5-7,7-9',
@@ -23,7 +23,7 @@ def count_completely_overlapped_pairs_in_range(ranges: List[str]) -> int:
     ...     '6-6,4-6',
     ...     '2-6,4-8',
     ... ]
-    >>> count_completely_overlapped_pairs_in_range(items_list)
+    >>> count_completely_overlapped_pairs_in_range(ranges)
     2
     """
     num_completely_overlapped_pairs = 0
@@ -38,7 +38,7 @@ def count_completely_overlapped_pairs_in_range(ranges: List[str]) -> int:
 
 def count_overlapping_pairs_in_range(ranges: List[str]) -> int:
     """
-    >>> items_list = [
+    >>> ranges = [
     ...     '2-4,6-8',
     ...     '2-3,4-5',
     ...     '5-7,7-9',
@@ -46,7 +46,7 @@ def count_overlapping_pairs_in_range(ranges: List[str]) -> int:
     ...     '6-6,4-6',
     ...     '2-6,4-8',
     ... ]
-    >>> count_overlapping_pairs_in_range(items_list)
+    >>> count_overlapping_pairs_in_range(ranges)
     4
     """
     num_overlapping_pairs = 0
