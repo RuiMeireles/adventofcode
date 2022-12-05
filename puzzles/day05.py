@@ -1,7 +1,7 @@
 from copy import deepcopy
 import re
 
-FN_INPUT = "aoc/day05_input.txt"
+FN_INPUT = "puzzles/day05_input.txt"
 
 with open(FN_INPUT) as f:
     lines = f.read()
