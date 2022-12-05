@@ -9,8 +9,8 @@ with open(FN_INPUT) as f:
     lines = f.read()
 
 stacks_txt, instructions_txt = lines.split('\n\n')
-stacks_lines = [line.rstrip() for line in stacks_txt.split('\n')]
-instructions_lines = [line.rstrip() for line in instructions_txt.split('\n')]
+stacks_lines = [line.rstrip() for line in stacks_txt.split('\n') if line]
+instructions_lines = [line.rstrip() for line in instructions_txt.split('\n') if line]
 
 stacks: Dict[str, List[str]] = {}
 for i, char in enumerate(stacks_lines[-1]):
