@@ -1,6 +1,7 @@
+from collections import deque
 from copy import deepcopy
 import re
-from typing import Dict, List
+from typing import Dict
 
 FN_INPUT = "puzzles/day05_input.txt"
 
@@ -12,10 +13,10 @@ stacks_txt, instructions_txt = lines.split('\n\n')
 stacks_lines = [line.rstrip() for line in stacks_txt.split('\n') if line]
 instructions_lines = [line.rstrip() for line in instructions_txt.split('\n') if line]
 
-stacks: Dict[str, List[str]] = {}
+stacks: Dict[str, deque[str]] = {}
 for i, char in enumerate(stacks_lines[-1]):
     if char.isnumeric():
-        stacks[char] = []
+        stacks[char] = deque()
         for j in range(len(stacks_lines) - 1, -1, -1):
             if stacks_lines[j][i].isalpha():
                 stacks[char].append(stacks_lines[j][i])
@@ -30,10 +31,12 @@ for instruction in instructions_lines:
     num = int(num_txt)
     # Part 1
     for _ in range(num):
-        stacks_1[to_stack].append(stacks_1[from_stack].pop())
+        stacks_1[to_stack] += stacks_1[from_stack].pop()
     # Part 2
-    crates = stacks_2[from_stack][-num:]
-    stacks_2[from_stack] = stacks_2[from_stack][0:-num]
+    crates: deque[str] = deque()
+    for _ in range(num):
+        crates += stacks_2[from_stack].pop()
+    crates.reverse()
     stacks_2[to_stack] += crates
 print("".join([v[-1] for v in stacks_1.values()]))
-print("".join([v[-1] for v in stacks_2.values()]))
+print("".join([v[-1] for v in stacks_2.values()])) 
