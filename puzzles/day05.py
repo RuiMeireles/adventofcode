@@ -24,7 +24,7 @@ def read_stacks(stacks_lines: List[str]) -> Stacks:
     for i, char in enumerate(stacks_lines[-1]):
         if char.isnumeric():
             stacks[char] = deque()
-            for j in range(len(stacks_lines) - 1, -1, -1):
+            for j in range(len(stacks_lines) - 2, -1, -1):
                 if stacks_lines[j][i].isalpha():
                     stacks[char].append(stacks_lines[j][i])
     return stacks
