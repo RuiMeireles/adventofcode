@@ -3,8 +3,8 @@ import doctest
 from typing import Optional
 
 FILE_INPUT = "puzzles/day06_input.txt"
-BUFFER_START_OF_PACKET = 4
-BUFFER_START_OF_MESSAGE = 14
+BUFFER_SIZE_START_OF_PACKET = 4
+BUFFER_SIZE_START_OF_MESSAGE = 14
 
 
 def index_after_marker(line: str, buffer_size: int) -> Optional[int]:
@@ -26,8 +26,8 @@ if __name__ == "__main__":
     assert not doctest.testmod().failed
 
     with open(FILE_INPUT) as f:
-        lines = [line.rstrip() for line in f.readlines() if line]
+        message = f.read()
 
-    print(index_after_marker(lines[0], BUFFER_START_OF_PACKET))
-    print(index_after_marker(lines[0], BUFFER_START_OF_MESSAGE))
+    print(index_after_marker(message, BUFFER_SIZE_START_OF_PACKET))
+    print(index_after_marker(message, BUFFER_SIZE_START_OF_MESSAGE))
     exit()
