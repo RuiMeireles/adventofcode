@@ -19,10 +19,10 @@ def item_priority(item: str) -> int:
     52
     """
     char_number = ord(item)
-    if 97 <= char_number <= 122:
-        return char_number - 97 + 1
-    if 65 <= char_number <= 90:
-        return char_number - 65 + 27
+    if ord('a') <= char_number <= ord('z'):
+        return char_number - ord('a') + 1
+    if ord('A') <= char_number <= ord('Z'):
+        return char_number - ord('A') + 27
     raise ValueError(f"Item {item} is not a valid letter")
 
 
