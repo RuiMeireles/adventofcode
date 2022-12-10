@@ -15,7 +15,7 @@ def sprite(X: int) -> List[int]:
     [2, 3, 4]
     """
     offset = (SPRITE_WIDTH - 1) // 2
-    return [X - offset, X, X + offset]
+    return [X + i for i in range(-offset, offset + 1)]
 
 
 def crt_pixel(cycle: int, X: int) -> str:
@@ -34,7 +34,7 @@ def main(split_lines: List[List[str]]) -> Tuple[Dict[int, int], str]:
     cycle = 1
     X = 1
     history_X: Dict[int, int] = {}
-    crt: str = ""
+    crt = ""
     for words in split_lines:
         if words[0] == "noop":
             crt += crt_pixel(cycle, X)
