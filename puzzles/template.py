@@ -1,25 +1,28 @@
 import doctest
-from typing import List
+from typing import List, Tuple
 
 FILE_INPUT = "puzzles/dayXX_input.txt"
+Instruction = Tuple[str, int]
 
 
-def main(lines: List[str]) -> int:
+def part1(instructions: List[Instruction]) -> int:
     """
-    >>> lines = [
-    ...     '2-4,6-8',
+    >>> instructions = [
+    ...     ("R", 2),
     ... ]
-    >>> main(lines)
-    4
+    >>> part1(instructions)
+    True
     """
-    return 4
+    return True
 
 
 if __name__ == "__main__":
     assert not doctest.testmod().failed
 
     with open(FILE_INPUT) as f:
-        lines = [line.rstrip() for line in f.readlines() if line]
+        lines = f.read().split("\n")
+        split_lines = [line.split(" ") for line in lines]
+        instructions = [(words[0], int(words[1])) for words in split_lines]
 
-    print(main(lines))
+    print(part1(instructions))
     exit()
