@@ -41,18 +41,18 @@ def get_neighbors(p: Point, matrix: Matrix, reversed_path: bool = False) -> List
     return neighbors
 
 
-def get_next_possible_paths(path: Path, matrix: Matrix, visited: Matrix_b, part_1: bool) -> Tuple[List[Path], Matrix_b]:
+def get_next_possible_paths(path: Path, matrix: Matrix, visited: Matrix_b, part_1: bool) -> List[Path]:
+    """This function updates the 'visited' input argument"""
     new_paths: List[Path] = []
-    visited_new = deepcopy(visited)
     point = path[-1]
     for n in get_neighbors(point, matrix, reversed_path=not part_1):
         # Ignore the neighbor if it has been already visited by another path
-        if visited_new[n[0]][n[1]]:
+        if visited[n[0]][n[1]]:
             continue
         # Create a new possible path
-        visited_new[n[0]][n[1]] = True
+        visited[n[0]][n[1]] = True
         new_paths.append(path + [n])
-    return (new_paths, visited_new)
+    return new_paths
 
 
 def best_path_length(lines: List[str], part_1: bool) -> int:
@@ -88,8 +88,7 @@ def best_path_length(lines: List[str], part_1: bool) -> int:
     while True:
         # Discover the next possible paths (breadth-first search)
         for path in possible_paths:
-            new_paths, visited = get_next_possible_paths(path, matrix, visited, part_1)
-            next_possible_paths += new_paths
+            next_possible_paths += get_next_possible_paths(path, matrix, visited, part_1)
         if not next_possible_paths:
             raise ValueError("There are no solutions!")
         # Check if we reached the end in any of them
