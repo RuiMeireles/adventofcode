@@ -1,4 +1,4 @@
-# Day 9
+# Day 10
 
 --- Day 10: Cathode-Ray Tube ---
 You avoid the ropes, plunge into the river, and swim to shore.
@@ -306,10 +306,14 @@ End of cycle 21: finish executing addx -1 (Register X is now 20)
 Sprite position: ...................###..................
 Allowing the program to run to completion causes the CRT to produce the following image:
 
-## ..##..##..##..##..##..##..##..##..##..
-### ...###...###...###...###...###...###.
-#### ....####....####....####....####....
-##### .....#####.....#####.....#####.....
+## ..##..##..##..##..##..##..##..##..##
+
+### ...###...###...###...###...###...###
+
+#### ....####....####....####....####
+
+##### .....#####.....#####.....#####
+
 ######......######......######......####
 ####### .......#######.......#######.....
 Render the image given by your program. What eight capital letters appear on your CRT?
