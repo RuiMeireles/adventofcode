@@ -1,5 +1,4 @@
 import doctest
-from copy import deepcopy
 from typing import List, Tuple
 
 FILE_INPUT = "puzzles/day12_input.txt"
