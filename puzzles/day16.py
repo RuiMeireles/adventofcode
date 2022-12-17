@@ -8,7 +8,7 @@ import sys
 
 sys.setrecursionlimit(100_000)
 
-RUN_EXAMPLE = True
+RUN_EXAMPLE = False
 FILE_INPUT_EX = "puzzles/day16_input_ex.txt"
 FILE_INPUT = "puzzles/day16_input.txt"
 TOTAL_MINUTES_PART1 = 30
@@ -104,7 +104,9 @@ def dp_part_2(
     if num_player > 1:
         # This next confition was added to greatly reduce the computation time in Part 2
         # We won't run the algorithm for the 2nd player unless the 1st one already has a certain number of open valves
-        if RUN_EXAMPLE or 8 <= len(open_valves) <= 10:
+        # Unfortunately, this is producing wrong solutions...
+        # if RUN_EXAMPLE or 8 <= len(open_valves) <= 10:
+        if True:
             remaining_valves = tuple(sorted(list(set(openable_valves) - set(open_valves))))
             other_players_pressure = dp_part_2(
                 STARTING_NODE, TOTAL_MINUTES_PART2, tuple([]), remaining_valves, num_player - 1
