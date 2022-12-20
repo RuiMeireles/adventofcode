@@ -8,7 +8,7 @@ import sys
 
 sys.setrecursionlimit(100_000)
 
-RUN_EXAMPLE = False
+RUN_EXAMPLE = True
 FILE_INPUT_EX = "puzzles/day16_input_ex.txt"
 FILE_INPUT = "puzzles/day16_input.txt"
 TOTAL_MINUTES_PART1 = 30

@@ -1,5 +1,3 @@
-# Day 18
-
 --- Day 18: Boiling Boulders ---
 You and the elephants finally reach fresh air. You've emerged near the base of a large volcano that seems to be actively erupting! Fortunately, the lava seems to be flowing away from you and toward the ocean.
 

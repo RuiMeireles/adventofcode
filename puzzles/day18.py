@@ -73,8 +73,7 @@ def part1(cubes: List[P]) -> int:
 
 
 def expand_outside_neighborhood(p: P, cubes: List[P], outside: List[P]) -> None:
-    if p in cubes:
-        return
+    assert p not in cubes
     (x_min, x_max, y_min, y_max, z_min, z_max) = cubes_limits(tuple(cubes))
     for n in get_neighbors(p):
         if not (x_min <= n.x <= x_max and y_min <= n.y <= y_max and z_min <= n.z <= z_max):
@@ -109,7 +108,6 @@ def part2(cubes: List[P]) -> int:
     58
     """
     (x_min, x_max, y_min, y_max, z_min, z_max) = cubes_limits(tuple(cubes))
-    volume = (x_max - x_min + 1) * (y_max - y_min + 1) * (z_max - z_min + 1)
     # Determine starting_points for the search
     starting_points: List[P] = []
     for x in range(x_min, x_max + 1):
@@ -149,5 +147,4 @@ if __name__ == "__main__":
 
     print(part1(cubes))
     print(part2(cubes))
-    # 1281 - too low
     exit()
