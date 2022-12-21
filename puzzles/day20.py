@@ -144,7 +144,7 @@ if __name__ == "__main__":
         array = [int(line) for line in lines]
 
     for part in [1, 2]:
-        # Part 1:
+        # Part 1: 21.433755 seconds
         # Part 2: 200.920255 seconds
         print(f"Part {part}:")
         start = timer()
