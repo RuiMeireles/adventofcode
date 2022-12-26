@@ -1,5 +1,5 @@
 import doctest
-from typing import List, Tuple
+from typing import List
 
 FILE_INPUT = "puzzles/day25_input.txt"
 BASE5_DIGITS = "01234"
