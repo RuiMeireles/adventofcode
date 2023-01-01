@@ -8,7 +8,7 @@ import sys
 
 sys.setrecursionlimit(100_000)
 
-RUN_EXAMPLE = True
+RUN_EXAMPLE = False  # Change this to run with the example input
 FILE_INPUT_EX = "puzzles/day16_input_ex.txt"
 FILE_INPUT = "puzzles/day16_input.txt"
 TOTAL_MINUTES_PART1 = 30
@@ -96,13 +96,18 @@ def dp_part_2(
     Part 2
     Dynamic Programming approach
     Returns the amount of pressure that this state can generate in the remaining time
+    Runs the 2nd player with a smaller set of openable_valves after the 1st player finishes
+    Optimization relative to dp_part_1: Combines steps B and C together to evaluate less states
+    (only walks to a node if it can open its valve)
+
+    It ran in 13.5 minutes!!!
     """
     options: List[int] = []
     rate = sum([valve_rates[v] for v in open_valves])
     # Calculate for other players
     other_players_pressure = 0
     if num_player > 1:
-        # This next confition was added to greatly reduce the computation time in Part 2
+        # This next condition was added to greatly reduce the computation time in Part 2
         # We won't run the algorithm for the 2nd player unless the 1st one already has a certain number of open valves
         # Unfortunately, this is producing wrong solutions...
         # if RUN_EXAMPLE or 8 <= len(open_valves) <= 10:
@@ -119,20 +124,21 @@ def dp_part_2(
         return other_players_pressure
     # A) Do nothing until the end
     options.append(minutes_left * rate + other_players_pressure)
-    # B) If valve can still be opened
-    if node in openable_valves and node not in open_valves:
-        next_open_valves = tuple(sorted(list(open_valves) + [node]))
-        options.append(dp_part_2(node, minutes_left - 1, next_open_valves, openable_valves, num_player) + rate)
-    # C) Try available tunnels
+    # B + C) Walk to an unopened valve and open it
     for next_node, path in best_paths[node].items():
         # Only travel to nodes with unopened valves
         if next_node not in (set(openable_valves) - set(open_valves) - set([node])):
             continue
-        pressure_while_travelling = min(path.cost, minutes_left) * rate
+        # Only go there if there's time to walk, open the valve, and profit from the valve being opened
+        if minutes_left <= path.cost + 1:
+            continue
+        next_open_valves = tuple(sorted(list(open_valves) + [next_node]))
+        pressure_increase = (path.cost + 1) * rate
         options.append(
-            dp_part_2(next_node, minutes_left - path.cost, open_valves, openable_valves, num_player)
-            + pressure_while_travelling
+            dp_part_2(next_node, minutes_left - path.cost - 1, next_open_valves, openable_valves, num_player)
+            + pressure_increase
         )
+
     return max(options)
 
 
