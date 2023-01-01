@@ -137,19 +137,19 @@ def make_dp_turn(blueprint: dict[str, Amount]) -> Callable[[int, Amount, Amount]
     return dp_turn
 
 
-def multiply_results(results: list[int]) -> int:
-    answer = 1
-    for result in results:
-        answer *= result
-    return answer
-
-
 def sum_quality_levels(results: list[int]) -> int:
     """
     >>> sum_quality_levels([9, 12])
     33
     """
     return sum([(i + 1) * result for i, result in enumerate(results)])
+
+
+def multiply_results(results: list[int]) -> int:
+    answer = 1
+    for result in results:
+        answer *= result
+    return answer
 
 
 if __name__ == "__main__":
