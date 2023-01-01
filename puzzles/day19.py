@@ -75,65 +75,51 @@ def make_dp_turn(blueprint: dict[str, Amount]) -> Callable[[int, Amount, Amount]
         possible_number_geodes: list[int] = []
 
         # Option A: Build nothing until the end
-        # end_resources = [resources[i] + n * minutes_left for i, n in enumerate(robots)]
         end_resources = [res + rob * minutes_left for res, rob in zip(resources, robots)]
         possible_number_geodes.append(end_resources[RESOURCE_INDEX["geode"]])
 
-        # Option B: Build a robot of resource_type, start with geode
+        # Option B: Build a robot of resource_type. Start with geode
         if minutes_left > 1:  # We only want another robot if it has time to contribute
             for robot_resource, index in reversed(RESOURCE_INDEX.items()):
                 robot_cost = blueprint[robot_resource]
 
-                # B1: Don't build the robot if we already generate more resources of that type than we will ever need
+                # Don't build the robot if we already generate more resources of that type than we will ever need
                 max_resource_needed_per_min = max([costs[index] for costs in blueprint.values()])
                 if robot_resource != "geode" and robots[index] >= max_resource_needed_per_min:
                     continue
 
-                # B2: We can build a robot now
-                if all([res >= cost for res, cost in zip(resources, robot_cost)]):
-                    # Spend the resources in the new robot
-                    new_resources = [res - cost for res, cost in zip(resources, robot_cost)]
-                    # Increase the resources by waiting 1 minute
-                    new_resources = [res + 1 * num_rob for res, num_rob in zip(new_resources, robots)]
-                    new_robots = list(robots)
-                    new_robots[index] += 1
-                    possible_number_geodes.append(dp_turn(minutes_left - 1, tuple(new_robots), tuple(new_resources)))
-                    # If we can build a geode robot right now, don't even test the other options
-                    if robot_resource == "geode":
-                        break
-
-                # B3: We can only build a new robot later
-                else:
-                    # Determine IF we can ever have enough resources to build this robot
-                    if not all(
-                        [not bool(cost) or (bool(cost) and bool(num_rob)) for cost, num_rob in zip(robot_cost, robots)]
-                    ):
-                        continue
-                    # Determine WHEN we will have enough resources to build this robot
+                can_build_now = True if all([res >= cost for res, cost in zip(resources, robot_cost)]) else False
+                can_build_later = all(
+                    [not bool(cost) or (bool(cost) and bool(num_rob)) for cost, num_rob in zip(robot_cost, robots)]
+                )
+                if not (can_build_now or can_build_later):
+                    continue
+                if can_build_now:
                     waiting_minutes = 0
+                else:
+                    waiting_minutes = -1
                     for i in RESOURCE_INDEX.values():
                         if robot_cost[i] > resources[i] and robots[i] > 0:
                             # The integer division // always rounds down. But we want to round up.
                             # So we use a negative numerator, to get a floored negative result,
                             # and then negate, to get a ceiling positive result.
                             waiting_minutes = max(waiting_minutes, -((resources[i] - robot_cost[i]) // robots[i]))
-                    # We can't build a robot if we aren't generating the resources we need
-                    if waiting_minutes == 0:
-                        continue
-                    # Don't build the robot if there's no time
-                    if waiting_minutes >= minutes_left:
-                        continue
-                    # Spend the resources in the new robot
-                    new_resources = [res - cost for res, cost in zip(resources, robot_cost)]
-                    # Increase the resources by waiting the amount of minutes needed to gather the resources
-                    new_resources = [
-                        res + (waiting_minutes + 1) * num_rob for res, num_rob in zip(new_resources, robots)
-                    ]
-                    new_robots = list(robots)
-                    new_robots[index] += 1
-                    possible_number_geodes.append(
-                        dp_turn(minutes_left - waiting_minutes - 1, tuple(new_robots), tuple(new_resources))
-                    )
+                    assert waiting_minutes > 0
+                # Don't build the robot if there's no time
+                if waiting_minutes >= minutes_left:
+                    continue
+                # Spend the resources in the new robot
+                new_resources = [res - cost for res, cost in zip(resources, robot_cost)]
+                # Increase the resources by waiting the amount of minutes needed to gather the resources AND build the robot
+                new_resources = [res + (waiting_minutes + 1) * num_rob for res, num_rob in zip(new_resources, robots)]
+                new_robots = list(robots)
+                new_robots[index] += 1
+                possible_number_geodes.append(
+                    dp_turn(minutes_left - waiting_minutes - 1, tuple(new_robots), tuple(new_resources))
+                )
+                # If we were able to build a geode robot without waiting, don't even test the other options
+                if waiting_minutes == 0 and robot_resource == "geode":
+                    break
 
         # Select the best of the options
         return max(possible_number_geodes)
