@@ -9,7 +9,9 @@ sys.setrecursionlimit(100_000)
 Amount = tuple[int, int, int, int]
 
 FILE_INPUT = "puzzles/day19_input.txt"
-TOTAL_MINUTES = 24
+TOTAL_MINUTES_PART1 = 24
+TOTAL_MINUTES_PART2 = 32
+NUM_BLUEPRINTS_PART2 = 3
 INITIAL_ROBOTS = (1, 0, 0, 0)
 RESOURCE_INDEX = {
     "ore": 0,
@@ -64,6 +66,14 @@ def make_dp_turn(blueprint: dict[str, Amount]) -> Callable[[int, Amount, Amount]
     >>> dp_turn = make_dp_turn(blueprint2)
     >>> dp_turn(24, (1, 0, 0, 0), (0, 0, 0, 0))
     12
+
+    # These tests are commented because they take too long
+    #>>> dp_turn = make_dp_turn(blueprint1)
+    #>>> dp_turn(32, (1, 0, 0, 0), (0, 0, 0, 0))
+    #56
+    #>>> dp_turn = make_dp_turn(blueprint2)
+    #>>> dp_turn(32, (1, 0, 0, 0), (0, 0, 0, 0))
+    #62
     """
 
     @lru_cache(maxsize=None)
@@ -127,6 +137,13 @@ def make_dp_turn(blueprint: dict[str, Amount]) -> Callable[[int, Amount, Amount]
     return dp_turn
 
 
+def multiply_results(results: list[int]) -> int:
+    answer = 1
+    for result in results:
+        answer *= result
+    return answer
+
+
 def sum_quality_levels(results: list[int]) -> int:
     """
     >>> sum_quality_levels([9, 12])
@@ -143,13 +160,29 @@ if __name__ == "__main__":
 
     blueprint: dict[str, Amount] = {}
     blueprints = get_blueprints(lines)
-    results: list[int] = []
+    results: list[int]
+
+    print("Part 1:")
+    results = []
     for i, blueprint in enumerate(blueprints):
         print(f"{i + 1}: {blueprint}")
         dp_turn = make_dp_turn(blueprint)
-        max_num_geodes = dp_turn(TOTAL_MINUTES, INITIAL_ROBOTS, (0, 0, 0, 0))
+        max_num_geodes = dp_turn(TOTAL_MINUTES_PART1, INITIAL_ROBOTS, (0, 0, 0, 0))
         print(max_num_geodes)
         results.append(max_num_geodes)
-
     print(sum_quality_levels(results))
+    print()
+
+    print("Part 2:")
+    results = []
+    for i, blueprint in enumerate(blueprints):
+        if i == NUM_BLUEPRINTS_PART2:
+            break
+        print(f"{i + 1}: {blueprint}")
+        dp_turn = make_dp_turn(blueprint)
+        max_num_geodes = dp_turn(TOTAL_MINUTES_PART2, INITIAL_ROBOTS, (0, 0, 0, 0))
+        print(max_num_geodes)
+        results.append(max_num_geodes)
+    print(multiply_results(results))
+
     exit()
