@@ -74,17 +74,17 @@ def dp_part_1(node: str, minutes_left: int, open_valves: Tuple[str, ...]) -> int
         return 0
     # A) Do nothing until the end
     options.append(minutes_left * rate)
-    # B) If valve can still be opened
-    if node in openable_valves and node not in open_valves:
-        next_open_valves = tuple(sorted(list(open_valves) + [node]))
-        options.append(dp_part_1(node, minutes_left - 1, next_open_valves) + rate)
-    # C) Try available tunnels
+    # B + C) Walk to an unopened valve and open it
     for next_node, path in best_paths[node].items():
         # Only travel to nodes with unopened valves
-        if next_node not in (openable_valves - set(open_valves) - set([node])):
+        if next_node not in (set(openable_valves) - set(open_valves) - set([node])):
             continue
-        pressure_while_travelling = min(path.cost, minutes_left) * rate
-        options.append(dp_part_1(next_node, minutes_left - path.cost, open_valves) + pressure_while_travelling)
+        # Only go there if there's time to walk, open the valve, and profit from the valve being opened
+        if minutes_left <= path.cost + 1:
+            continue
+        next_open_valves = tuple(sorted(list(open_valves) + [next_node]))
+        pressure_increase = (path.cost + 1) * rate
+        options.append(dp_part_1(next_node, minutes_left - path.cost - 1, next_open_valves) + pressure_increase)
     return max(options)
 
 
