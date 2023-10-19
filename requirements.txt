@@ -1,4 +1,11 @@
+# Formatting / Linting / Typing
 black
 flake8
 mypy
-sympy
+# Debugging
+ipython
+# Data validation / Testing
+pydantic
+pytest
+# Other
+#sympy
